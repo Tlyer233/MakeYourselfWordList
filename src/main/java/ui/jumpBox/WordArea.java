@@ -4,6 +4,8 @@ import javafx.application.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
@@ -19,12 +21,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WordArea extends Application implements WordDataCallBack {
-    private Word oneWord;                                                        // 通过回调机制, 获取到来自划线取词取到的单词
-    private Label wordLabel = new Label();                                       // Key标签
-    private Label phoneticUKLabel = new Label(), phoneticUSLabel = new Label();  // 音标标签
-    private Button btnUK, btnUS;                                                 // 发音按钮
-    private ListView<Map.Entry<String, String>> wordExpsList = new ListView<>(); // 释义列表
-    private ListView<Map.Entry<String, String>> notesList = new ListView<>();    // 笔记列表
+    private Word oneWord;                                                                             // 通过回调机制, 获取到来自划线取词取到的单词
+    private Label wordLabel = new Label("wordLabel");                                                            // Key标签
+    private Label phoneticUKLabel = new Label("phoneticUKLabel"), phoneticUSLabel = new Label("phoneticUSLabel");                       // 音标标签
+    private Button btnUK = new Button("", getSoundIcon()), btnUS = new Button("", getSoundIcon()); // 发音按钮
+    private ListView<Map.Entry<String, String>> wordExpsList = new ListView<>();                       // 释义列表
+    private ListView<Map.Entry<String, String>> notesList = new ListView<>();                          // 笔记列表
+    private Button wordListAreaBtn = new Button("单词本"), noteAreaBtn = new Button("笔记本");  // 弹出单词本/笔记本窗口
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -32,17 +35,35 @@ public class WordArea extends Application implements WordDataCallBack {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // 弹出窗口
-        GridPane mainWordArea = createLayout(); // 设置SceneGraph(布局)
-        Scene scene = new Scene(mainWordArea);  // 设置Scene
-        primaryStage.setScene(scene);           // 设置primaryStage
+        // 弹出WordArea窗口
+        GridPane root = createLayout(); // 设置SceneGraph(布局)
+        Scene scene = new Scene(root);  // 设置Scene
+        primaryStage.setScene(scene);   // 设置primaryStage
         primaryStage.show();
+
+        // 弹出单词本窗口
+        wordListAreaBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 创建一个新的Stage
+                Stage wordListAreaStage = new Stage();
+
+                // 计算新窗口的位置
+                double x = primaryStage.getX() + primaryStage.getWidth();
+                double y = primaryStage.getY();
+                wordListAreaStage.setX(x);
+                wordListAreaStage.setY(y);
+
+                WordListArea wordListArea = new WordListArea();
+                wordListArea.start(wordListAreaStage); // 使用新的Stage
+            }
+        });
 
         // 当窗口成为焦点时触发事件
         primaryStage.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                // 当窗口成为焦点是, newValue为true
+                // 当窗口成为焦点时, newValue为true
                 if (newValue && oneWord != null) updateWordData(oneWord); // 初始化获取的单词数据
             }
         });
@@ -62,15 +83,16 @@ public class WordArea extends Application implements WordDataCallBack {
         // 发音按钮不会变
         btnUK = new Button("", getSoundIcon());
         btnUS = new Button("", getSoundIcon());
-        // 设置布局
         GridPane mainWordArea = new GridPane();
+        // [布局] 单词
         mainWordArea.add(wordLabel, 0, 0);
-        HBox phonetics_UK = new HBox(phoneticUKLabel, btnUK);
-        HBox phonetics_US = new HBox(phoneticUSLabel, btnUS);
-        mainWordArea.add(phonetics_UK, 0, 1);
-        mainWordArea.add(phonetics_US, 2, 1);
-        mainWordArea.add(wordExpsList, 0, 2, 3, 1);
-        mainWordArea.add(notesList, 0, 3, 3, 1);
+        mainWordArea.add(new HBox(phoneticUKLabel, btnUK), 0, 3);
+        mainWordArea.add(new HBox(phoneticUSLabel, btnUS), 1, 3);
+        mainWordArea.add(wordExpsList, 0, 4, 3, 1);
+        mainWordArea.add(notesList, 0, 5, 3, 1);
+        // [布局] 跳转单词列表/笔记列表
+        mainWordArea.add(wordListAreaBtn, 2, 1);
+        mainWordArea.add(noteAreaBtn, 2, 2);
         return mainWordArea;
     }
 
