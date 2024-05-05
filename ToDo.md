@@ -46,5 +46,5 @@
 ####  UnderLineWordByClipboard
 
 - [ ] 制作用Robot执行`CTRL+C`并读取剪切板的划线取词
-- [ ] 注意只有当鼠标左键按下时, 再开始实时读取Glipboard从而提高后台占用率
+- [ ] 注意只有当鼠标左键按下时, 再开始实时读取Glipboard从而降低后台占用率
 
