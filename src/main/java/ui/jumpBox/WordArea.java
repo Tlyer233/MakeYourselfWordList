@@ -11,7 +11,6 @@ import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.*;
-import javafx.util.*;
 import pojo.Word;
 import service.callback.WordDataCallBack;
 import service.underLineWord.impl.UnderLineWordByOCRImpl;
@@ -20,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WordArea extends Application implements WordDataCallBack {
-    private Word oneWord;                                                        //  通过回调机制, 获取到来自划线取词取到的单词
+    private Word oneWord;                                                        // 通过回调机制, 获取到来自划线取词取到的单词
     private Label wordLabel = new Label();                                       // Key标签
     private Label phoneticUKLabel = new Label(), phoneticUSLabel = new Label();  // 音标标签
     private Button btnUK, btnUS;                                                 // 发音按钮
@@ -38,6 +37,7 @@ public class WordArea extends Application implements WordDataCallBack {
         Scene scene = new Scene(mainWordArea);  // 设置Scene
         primaryStage.setScene(scene);           // 设置primaryStage
         primaryStage.show();
+
         // 当窗口成为焦点时触发事件
         primaryStage.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -49,7 +49,7 @@ public class WordArea extends Application implements WordDataCallBack {
 
         // [回调] 处理回调
         UnderLineWordByOCRImpl underLineWordByOCR = new UnderLineWordByOCRImpl();
-        underLineWordByOCR.getTrackByJNativeHook(this); // 把自己传过去, 当取词后便于更新thisのoneWord
+        underLineWordByOCR.getTrackByJNativeHook(this, 3, 5); // 把自己传过去, 当取词后便于更新thisのoneWord
     }
 
 
