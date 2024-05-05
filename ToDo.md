@@ -10,7 +10,7 @@
 
 ## HotFix
 
-- [ ] 2024年5月5日: 需要对Pojo的Word进行重构
+- [X] 2024年5月5日: 需要对Pojo的Word进行重构
 
 ## Develop
 
@@ -40,6 +40,7 @@
 
 ####  UnderLineWordByOCR
 
+- [ ] 进行解耦, 将getTrackByJNativeHookImpl解耦并融合到UnderLineWordByOCRImpl,
 - [ ] 当选中区域过于小时, 应当适当扩大
 - [ ] 优化`THRESHOLD_TO_PIXEL`和`COLOR_CHIP_SIZE`两个变量在不同背景下的动态取值
 
