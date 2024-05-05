@@ -5,15 +5,65 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 public class Word {
-    private String key; // [Input] 单词
-    private String type; // [YouDao] 词语类型[单词(word), 短语(phrase), 句子(sentence)]
-    private HashMap<String, String[]> phonetics; // [Bing] 音标和发音 HashMap<"UK/US", String[]> String[0]=音标, String[1]=音频网址
-    private List<Pair<String, String>> wordExps;// [YouDao] 词性和释义 List<Pair<词性, 释义>>
-    private List<Pair<String, String>> notes; // [Input] 笔记 List<Pair<标题, 正文>>
+    private String key;                        // [Input] 单词
+    private String type;                       // [YouDao] 词语类型[单词(word), 短语(phrase), 句子(sentence)]
+    private String phoneticUK;                 // 单词的UK音标
+    private String phoneticUS;                 // 单词的US音标
+    private String proUK;                      // 单词UK的发音地址URL
+    private String proUS;                      // 单词US的发音地址URL
+    private HashMap<String, String> wordExps;  // 词性和释义 HashMap<词性, 释义>
+    private HashMap<String, String> notes;     // 笔记 List<Pair<标题, 正文>>
 
     public Word() {
+    }
+
+    public Word(String key, String type, String phoneticUK, String phoneticUS, String proUK, String proUS, HashMap<String, String> wordExps, HashMap<String, String> notes) {
+        this.key = key;
+        this.type = type;
+        this.phoneticUK = phoneticUK;
+        this.phoneticUS = phoneticUS;
+        this.proUK = proUK;
+        this.proUS = proUS;
+        this.wordExps = wordExps;
+        this.notes = notes;
+    }
+
+    /**
+     * [ForTest] 打印当前单词
+     */
+    public void printWord() {
+        System.out.println("key:" + key);
+        System.out.println("type:" + type);
+        if ("word".equals(type)) {
+            System.out.println("phonetics:");
+            System.out.println("UK " + "音标:" + phoneticUK != null ? phoneticUK : "null" + "地址:" + proUK != null ? proUK : "null");
+            System.out.println("UK " + "音标:" + phoneticUS != null ? phoneticUS : "null" + "地址:" + proUS != null ? proUS : "null");
+        }
+        System.out.println("wordExps:");
+        if (wordExps == null || wordExps.size() == 0) System.out.println("释义为空");
+        else {
+            for (Map.Entry<String, String> wordExp : wordExps.entrySet()) {
+                String key = wordExp.getKey();
+                String value = wordExp.getValue();
+                System.out.println(key + value);
+            }
+        }
+
+
+        System.out.println("notes:");
+        if (notes == null || notes.size() == 0) System.out.println("笔记为空");
+        else {
+            for (Map.Entry<String, String> wordExp : notes.entrySet()) {
+                String key = wordExp.getKey();
+                String value = wordExp.getValue();
+                System.out.println(key + value);
+            }
+        }
+        System.out.println("-----------------------------------------------");
     }
 
     public String getKey() {
@@ -32,65 +82,52 @@ public class Word {
         this.type = type;
     }
 
-    public HashMap<String, String[]> getPhonetics() {
-        return phonetics;
+    public String getPhoneticUK() {
+        return phoneticUK;
     }
 
-    public void setPhonetics(HashMap<String, String[]> phonetics) {
-        this.phonetics = phonetics;
+    public void setPhoneticUK(String phoneticUK) {
+        this.phoneticUK = phoneticUK;
     }
 
-    public List<Pair<String, String>> getWordExps() {
+    public String getPhoneticUS() {
+        return phoneticUS;
+    }
+
+    public void setPhoneticUS(String phoneticUS) {
+        this.phoneticUS = phoneticUS;
+    }
+
+    public String getProUK() {
+        return proUK;
+    }
+
+    public void setProUK(String proUK) {
+        this.proUK = proUK;
+    }
+
+    public String getProUS() {
+        return proUS;
+    }
+
+    public void setProUS(String proUS) {
+        this.proUS = proUS;
+    }
+
+    public HashMap<String, String> getWordExps() {
         return wordExps;
     }
 
-    public void setWordExps(List<Pair<String, String>> wordExps) {
+    public void setWordExps(HashMap<String, String> wordExps) {
         this.wordExps = wordExps;
     }
 
-    public List<Pair<String, String>> getNotes() {
+    public HashMap<String, String> getNotes() {
         return notes;
     }
 
-    public void addNote(Pair<String, String> note) {
-        if (notes == null) notes = new ArrayList<>();
-        notes.add(note);
-    }
-
-    /**
-     * [ForTest] 打印当前单词
-     */
-    public void printWord() {
-        System.out.println("key:" + key);
-        System.out.println("type:" + type);
-        switch (type) {
-            case "word": {
-                System.out.println("phonetics:");
-                if (phonetics != null) {
-                    System.out.println("UK " + "音标:" + phonetics.get("UK")[0] + "地址:" + phonetics.get("UK")[1]);
-                    System.out.println("US " + "音标:" + phonetics.get("US")[0] + "地址:" + phonetics.get("US")[1]);
-                } else System.out.println("empty");
-                System.out.println("wordExps:");
-                for (Pair<String, String> wordExp : wordExps) {
-                    System.out.println(wordExp.toString());
-                }
-            }
-            break;
-            case "phrase":
-            case "sentence": {
-                System.out.println("wordExps:");
-                System.out.println(wordExps.get(0).toString());
-            }
-            break;
-        }
-        System.out.print("notes:");
-        if (notes == null) System.out.println("empty");
-        else {
-            System.out.println();
-            for (Pair<String, String> note : notes) {
-                System.out.println(note.toString());
-            }
-        }
+    public void setNotes(HashMap<String, String> notes) {
+        this.notes = notes;
     }
 
 }

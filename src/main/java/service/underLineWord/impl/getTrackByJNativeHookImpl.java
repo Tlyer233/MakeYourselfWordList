@@ -17,14 +17,20 @@ import java.util.ArrayList;
 public class getTrackByJNativeHookImpl implements NativeMouseInputListener {
     private Point startPoint = null;
     private Point endPoint = null;
-    private final int THRESHOLD_TO_PIXEL = 10; // 误差在多少范围内被认定为近似颜色         建议:[10]
-    private final int COLOR_CHIP_SIZE = 3; // 出现次数最多的前colorChipSize个颜色(色卡大小) 建议:[3]
+    private int THRESHOLD_TO_PIXEL = 10; // 误差在多少范围内被认定为近似颜色         建议:[10]
+    private int COLOR_CHIP_SIZE = 3; // 出现次数最多的前colorChipSize个颜色(色卡大小) 建议:[3]
     private WordDataCallBack wordDataCallBack;
 
     public getTrackByJNativeHookImpl() {
     }
 
     public getTrackByJNativeHookImpl(WordDataCallBack wordDataCallBack) {
+        this.wordDataCallBack = wordDataCallBack;
+    }
+
+    public getTrackByJNativeHookImpl(WordDataCallBack wordDataCallBack, int THRESHOLD_TO_PIXEL, int COLOR_CHIP_SIZE) {
+        this.THRESHOLD_TO_PIXEL = THRESHOLD_TO_PIXEL;
+        this.COLOR_CHIP_SIZE = COLOR_CHIP_SIZE;
         this.wordDataCallBack = wordDataCallBack;
     }
 
@@ -60,15 +66,12 @@ public class getTrackByJNativeHookImpl implements NativeMouseInputListener {
 
             // STEP4: 显示(打印)单词; 把单词传出去打印
             if (word != null) {
-                System.out.println("在getTrackByJNativeHookImpl中OCR获取到了word");
                 if (wordDataCallBack != null) {
                     wordDataCallBack.GetWordData(word);
                 }
             } else System.out.println("word为null");
 
-
         }
     }
-
 
 }

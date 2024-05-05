@@ -10,7 +10,7 @@
 
 ## HotFix
 
-
+- [ ] 2024年5月5日: 需要对Pojo的Word进行重构
 
 ## Develop
 

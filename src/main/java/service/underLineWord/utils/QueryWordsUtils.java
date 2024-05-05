@@ -38,12 +38,18 @@ public class QueryWordsUtils {
         String keyType = getTypeFromURL(YouDaoArea);
         if (keyType == null) return null;
         else resWord.setType(keyType);
-        // 设置单词的音标和发音
+        // 设置音标和发音
         if ("word".equals(keyType)) {
             HashMap<String, String[]> phoneticsMap = getPhoneticsFromURL(Bingparse);
-            if (phoneticsMap != null) resWord.setPhonetics(phoneticsMap);
+            if (phoneticsMap.size() != 0) {
+                resWord.setPhoneticUS(phoneticsMap.get("US")[0]);// 单词的UK音标
+                resWord.setPhoneticUK(phoneticsMap.get("UK")[0]);// 单词的US音标
+                resWord.setProUK(phoneticsMap.get("UK")[1]);     // 单词UK的发音地址URL
+                resWord.setProUS(phoneticsMap.get("US")[1]);     // 单词US的发音地址URL
+            }
         }
-        // 设置单词的词性和释义
+
+        // 设置释义
         resWord.setWordExps(getWordExpsFromURL(YouDaoArea, keyType));
         return resWord;
     }
@@ -138,10 +144,10 @@ public class QueryWordsUtils {
 
         if (!"".equals(phoneticUS)) {
             String[] US = new String[2];
-            US[0] = phoneticUS;
+            US[0] = phoneticUS; // 音标
             Element bigaud_us = parse.getElementById("bigaud_us");
             String USmp3link = bigaud_us.attr("data-mp3link");
-            US[1] = USmp3link;
+            US[1] = USmp3link; // 音频URL
             res.put("US", US);
         }
         if (!"".equals(phoneticUK)) {
@@ -162,11 +168,11 @@ public class QueryWordsUtils {
      * @param wordType:   ["word", "phrase", "sentence"]
      * @return List<Pair < 词性, 释义>> when pari.getKey().equals("") 说明是短语或句子, 单词的词性不可能为""
      */
-    private static List<Pair<String, String>> getWordExpsFromURL(Element searchArea, String wordType) {
-        List<Pair<String, String>> res = new ArrayList<>();
+    private static HashMap<String, String> getWordExpsFromURL(Element searchArea, String wordType) {
+        HashMap<String, String> res = new HashMap<>();
         if ("sentence".equals(wordType)) {
             Elements transContent = searchArea.getElementsByClass("trans-content");
-            res.add(new Pair<>("", transContent.text()));
+            res.put("", transContent.text());
             return res;
         } else {
             Elements wordExps = searchArea.getElementsByClass("word-exp");
@@ -177,10 +183,9 @@ public class QueryWordsUtils {
                 String transText = trans.text();
                 if ("word".equals(wordType) && ("".equals(posText) || "".equals(transText))) continue;
                 else if ("phrase".equals(wordType) && "".equals(posText) && "".equals(transText)) continue;
-                res.add(new Pair<>(pos.text(), trans.text()));
+                res.put(pos.text(), trans.text());
             }
         }
         return res;
     }
-
 }

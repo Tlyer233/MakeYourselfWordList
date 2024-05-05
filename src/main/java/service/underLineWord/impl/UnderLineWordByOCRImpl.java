@@ -2,12 +2,14 @@ package service.underLineWord.impl;
 
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
-import pojo.Word;
+import com.github.kwhat.jnativehook.mouse.NativeMouseInputListener;
 import service.callback.WordDataCallBack;
 
-public class UnderLineWordByOCRImpl {
+public class UnderLineWordByOCRImpl implements NativeMouseInputListener {
+
+
     /**
-     * 执行全局鼠标监听
+     * ①注册全局鼠标监听 ②传入指定回调UI界面
      */
     public void getTrackByJNativeHook(WordDataCallBack wordDataCallBack) {
         getTrackByJNativeHookImpl jNativeHookUtils = null;
@@ -25,9 +27,5 @@ public class UnderLineWordByOCRImpl {
             System.exit(1);
         }
     }
-
-    // public static void main(String[] args) {
-    //     UnderLineWordByOCRImpl.getTrackByJNativeHook();
-    // }
 
 }
