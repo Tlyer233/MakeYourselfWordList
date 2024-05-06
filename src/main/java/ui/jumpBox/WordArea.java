@@ -21,12 +21,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WordArea extends Application implements WordDataCallBack {
-    private Word oneWord;                                                                             // 通过回调机制, 获取到来自划线取词取到的单词
-    private Label wordLabel = new Label("wordLabel");                                                            // Key标签
-    private Label phoneticUKLabel = new Label("phoneticUKLabel"), phoneticUSLabel = new Label("phoneticUSLabel");                       // 音标标签
+    private Word oneWord; // 通过回调机制, 获取到来自划线取词取到的单词
+    private Label wordLabel = new Label("wordLabel");  // Key标签
+    private Label phoneticUKLabel = new Label("phoneticUKLabel"), phoneticUSLabel = new Label("phoneticUSLabel"); // 音标标签
     private Button btnUK = new Button("", getSoundIcon()), btnUS = new Button("", getSoundIcon()); // 发音按钮
-    private ListView<Map.Entry<String, String>> wordExpsList = new ListView<>();                       // 释义列表
-    private ListView<Map.Entry<String, String>> notesList = new ListView<>();                          // 笔记列表
+    private ListView<Map.Entry<String, String>> wordExpsList = new ListView<>(); // 释义列表
+    private ListView<Map.Entry<String, String>> notesList = new ListView<>(); // 笔记列表
     private Button wordListAreaBtn = new Button("单词本"), noteAreaBtn = new Button("笔记本");  // 弹出单词本/笔记本窗口
 
     public static void main(String[] args) {

@@ -1,22 +1,19 @@
 package pojo;
 
-import javafx.util.Pair;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
 public class Word {
-    private String key;                        // [Input] 单词
-    private String type;                       // [YouDao] 词语类型[单词(word), 短语(phrase), 句子(sentence)]
+    private String key;                        // 单词
+    private String type;                       // 词语类型[单词(word), 短语(phrase), 句子(sentence)]
     private String phoneticUK;                 // 单词的UK音标
     private String phoneticUS;                 // 单词的US音标
     private String proUK;                      // 单词UK的发音地址URL
     private String proUS;                      // 单词US的发音地址URL
     private HashMap<String, String> wordExps;  // 词性和释义 HashMap<词性, 释义>
     private HashMap<String, String> notes;     // 笔记 List<Pair<标题, 正文>>
+    private HashMap<String, Integer> times;    // [WordList] 记录每个单词本中的出现次数
 
     public Word() {
     }
@@ -130,4 +127,11 @@ public class Word {
         this.notes = notes;
     }
 
+    public HashMap<String, Integer> getTimes() {
+        return times;
+    }
+
+    public void setTimes(HashMap<String, Integer> times) {
+        this.times = times;
+    }
 }
